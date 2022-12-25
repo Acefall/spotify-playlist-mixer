@@ -1,0 +1,19 @@
+{
+    "spotifyId": "acefall",
+    "sources": [
+        {
+            "patternKey": "Salsa",
+            "url": "https://open.spotify.com/playlist/5Db6luvdhq3bEGwX3zcI5P?si=1e777cc298fe4fc4"
+        },
+        {
+            "patternKey": "Bachata",
+            "url": "https://open.spotify.com/playlist/4rPVgVb4xNOpexM22v5I72?si=8a4902de321a4f93"
+        },
+        {
+            "patternKey": "Kizomba",
+            "url": "https://open.spotify.com/playlist/0RPAReDJdaECIrco82WuhC?si=388dc32d20cc43b0"
+        }
+    ],
+    "pattern": ["Salsa", "Salsa", "Salsa", "Bachata", "Bachata", "Kizomba", "Kizomba", "Kizomba"],
+    "newPlaylistName" : "Wohnzimmerparty"
+}
