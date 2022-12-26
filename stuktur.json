@@ -1,24 +1,30 @@
 {
     "title": "Mein Geiler Mix",
-    "looptype": "count",
-    "count": "infinity",
-    "shuffle": false, 
-    "remove-identical-tracks": true,
+    "type": "max-tracks",
+    "tracks": "200",
+    "shuffle": false,
     "sources": [
         {
             "title": "9 Mal Salsa",
-            "looptype": "count",
+            "type": "loop",
             "count": "9",
+            "on-empty": "reuse",
             "shuffle": false,
             "sources": [
                 {
                     "title": "Salsa Loop",
-                    "looptype": "use-all", 
+                    "type": "use-all",
                     "shuffle": true,
+                    "shuffle-seed": 123456789,
+                    "filters": [
+                        {
+                            "filterType": "unique"
+                        }
+                    ],
                     "sources": [
                         {
                             "title": "Salslamix 1",
-                            "looptype": "spotify-playlist",
+                            "type": "spotify-playlist",
                             "playlist-id": "xyz",
                             "playlist-url": "example-url",
                             "filters": [
@@ -36,7 +42,7 @@
                         },
                         {
                             "title": "Salslamix 2",
-                            "looptype": "spotify-playlist",
+                            "type": "spotify-playlist",
                             "playlist-id": "xyz",
                             "playlist-url": "example-url",
                             "filters": [
@@ -53,13 +59,13 @@
         },
         {
             "title": "2 Mal Chachacha",
-            "looptype": "count",
+            "type": "count",
             "count": "2",
-            "shuffle": false,
+            "shuffle": true,
             "sources": [
                 {
                     "title": "Chachacha 1",
-                    "looptype": "spotify-playlist",
+                    "type": "spotify-playlist",
                     "playlist-id": "xyz",
                     "playlist-url": "example-url",
                     "filters": [
@@ -72,6 +78,9 @@
                             "filterType": "duration_ms",
                             "min": 30,
                             "max": 100
+                        },
+                        {
+                            "filterType": "unique"
                         }
                     ]
                 }
