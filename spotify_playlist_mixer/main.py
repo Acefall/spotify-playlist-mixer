@@ -5,6 +5,7 @@ import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 import json
 import spotipySecrets
+import random
 
 scope = "user-library-read playlist-modify-private playlist-modify-public"
 
@@ -17,12 +18,15 @@ sp = spotipy.Spotify(
 with open('dj.json') as configFile:
     config = json.load(configFile)
 
+if "seed" in config.keys():
+    random.seed(config["seed"])
+
 
 mixer = SpotifyPlaylistMixer(sp, config["spotifyId"])
 
 playlists = {}
 for source in config["sources"]:
-    playlists[source["patternKey"]] = Playlist(sp, source["url"])
+    playlists[source["patternKey"]] = Playlist(sp, source["url"], source.get("randomize", False))
 
 pattern = RepeatingPattern(
     config["pattern"])
