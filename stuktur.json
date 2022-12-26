@@ -3,12 +3,12 @@
     "type": "max-tracks",
     "tracks": "200",
     "shuffle": false,
+    "on-empty": "reuse",
     "sources": [
         {
             "title": "9 Mal Salsa",
             "type": "loop",
             "count": "9",
-            "on-empty": "reuse",
             "shuffle": false,
             "sources": [
                 {
