@@ -1,0 +1,81 @@
+{
+    "title": "Mein Geiler Mix",
+    "looptype": "count",
+    "count": "infinity",
+    "shuffle": false, 
+    "remove-identical-tracks": true,
+    "sources": [
+        {
+            "title": "9 Mal Salsa",
+            "looptype": "count",
+            "count": "9",
+            "shuffle": false,
+            "sources": [
+                {
+                    "title": "Salsa Loop",
+                    "looptype": "use-all", 
+                    "shuffle": true,
+                    "sources": [
+                        {
+                            "title": "Salslamix 1",
+                            "looptype": "spotify-playlist",
+                            "playlist-id": "xyz",
+                            "playlist-url": "example-url",
+                            "filters": [
+                                {
+                                    "filterType": "energy",
+                                    "min": 30,
+                                    "max": 100
+                                },
+                                {
+                                    "filterType": "duration_ms",
+                                    "min": 30,
+                                    "max": 100
+                                }
+                            ]
+                        },
+                        {
+                            "title": "Salslamix 2",
+                            "looptype": "spotify-playlist",
+                            "playlist-id": "xyz",
+                            "playlist-url": "example-url",
+                            "filters": [
+                                {
+                                    "filterType": "energy",
+                                    "min": 30,
+                                    "max": 50
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "title": "2 Mal Chachacha",
+            "looptype": "count",
+            "count": "2",
+            "shuffle": false,
+            "sources": [
+                {
+                    "title": "Chachacha 1",
+                    "looptype": "spotify-playlist",
+                    "playlist-id": "xyz",
+                    "playlist-url": "example-url",
+                    "filters": [
+                        {
+                            "filterType": "energy",
+                            "min": 30,
+                            "max": 100
+                        },
+                        {
+                            "filterType": "duration_ms",
+                            "min": 30,
+                            "max": 100
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
