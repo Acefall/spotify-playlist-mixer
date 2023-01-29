@@ -1,23 +1,16 @@
-import random
+from source.source import Source
+from source.outOfTracks import OutOfTracks
 
-class Playlist:
+
+class SpotifyPlaylist(Source):
     """Provides an iterator to the ids of the tracks in a spotify playlist.
     """
 
-    def __init__(self, authentication: object, url: str, randomize=False):
-        """Creates a new playlist.
-
-        Args:
-            authentication (object): The spotipy authentication object
-            url (str): Url to the playlist
-            randomize (bool): True if source should be in a random order
-        """
-        self.auth = authentication
+    def __init__(self, authentication: object, url=""):
         self.url = url
+        self.auth = authentication
         self._queryTracks()
-        if randomize:
-            random.shuffle(self.tracks)
-        self.iterator = iter(self.tracks)
+        self.nextTrack = 0
 
     def _queryTracks(self):
         self.tracks = []
@@ -39,4 +32,14 @@ class Playlist:
         return self
 
     def __next__(self):
-        return next(self.iterator)
+        if not self.has_next():
+            raise OutOfTracks()
+
+        self.nextTrack += 1
+        return self.tracks[self.nextTrack - 1]
+
+    def has_next(self):
+        return self.nextTrack < len(self.tracks)
+
+    def reset_pattern(self, depp=False):
+        self.nextTrack = 0

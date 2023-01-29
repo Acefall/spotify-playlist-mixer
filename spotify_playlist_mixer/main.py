@@ -1,6 +1,6 @@
 from spotifyPlaylistMixer import SpotifyPlaylistMixer
 from repeatingPattern import RepeatingPattern
-from playlist import Playlist
+from source.spotifyPlaylist import SpotifyPlaylist
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 import json
@@ -26,7 +26,7 @@ mixer = SpotifyPlaylistMixer(sp, config["spotifyId"])
 
 playlists = {}
 for source in config["sources"]:
-    playlists[source["patternKey"]] = Playlist(sp, source["url"], source.get("randomize", False))
+    playlists[source["patternKey"]] = SpotifyPlaylist(sp, source["url"])
 
 pattern = RepeatingPattern(
     config["pattern"])
