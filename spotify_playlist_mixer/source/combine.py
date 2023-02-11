@@ -9,7 +9,7 @@ class Combine(Source):
         self.nextSourceStrategy = nextSourceStrategy
         self.currentSource = self.nextSourceStrategy.getNextSource()
 
-        # Stores for each source whther it has thrown the out of tracks exception
+        # Stores for each source whether it has thrown the out of tracks exception
         self.hasThrownOutOfTracks = {key: value for key, value in [(source, False) for source in self.sources]}
 
 
@@ -20,10 +20,8 @@ class Combine(Source):
         if not self.has_next():
             raise OutOfTracks()
         nextValue = None
-        print("entering while")
         while True: 
             try:
-                print(self.currentSource)
                 nextValue = next(self.currentSource)
                 break
             except OutOfTracks as e:
@@ -32,7 +30,6 @@ class Combine(Source):
                 self.hasThrownOutOfTracks[self.currentSource] = True
                 self.currentSource = self.nextSourceStrategy.getNextSource()
             except StopIteration:
-                print("raised stop iteration")
                 self.currentSource.reset_pattern()
                 self.currentSource = self.nextSourceStrategy.getNextSource()
 

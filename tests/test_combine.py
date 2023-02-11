@@ -24,3 +24,6 @@ def test_forwards_out_of_tracks():
     with pytest.raises(OutOfTracks) as e_info:
         next(combine)
 
+    with pytest.raises(OutOfTracks) as e_info:
+        next(combine)
+
