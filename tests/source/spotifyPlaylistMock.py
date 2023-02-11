@@ -25,3 +25,6 @@ class SpotifyPlaylistMock(Source):
 
     def reset_pattern(self, _):
         self.nextTrack = 0
+
+    def __str__(self):
+        return str(self.tracks)

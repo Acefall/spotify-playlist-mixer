@@ -6,8 +6,11 @@ class Combine(Source):
         self.sources = sources
         if len(sources) == 0:
             raise ValueError("The list of sources must not be empty.")
-        self.currentSource = self.sources[0]
         self.nextSourceStrategy = nextSourceStrategy
+        self.currentSource = self.nextSourceStrategy.getNextSource()
+
+        # Stores for each source whther it has thrown the out of tracks exception
+        self.hasThrownOutOfTracks = {key: value for key, value in [(source, False) for source in self.sources]}
 
 
     def __iter__(self):
@@ -16,15 +19,20 @@ class Combine(Source):
     def __next__(self):
         if not self.has_next():
             raise OutOfTracks()
-
         nextValue = None
+        print("entering while")
         while True: 
             try:
+                print(self.currentSource)
                 nextValue = next(self.currentSource)
                 break
             except OutOfTracks as e:
-                raise e
+                if self.hasThrownOutOfTracks[self.currentSource]:
+                    raise e
+                self.hasThrownOutOfTracks[self.currentSource] = True
+                self.currentSource = self.nextSourceStrategy.getNextSource()
             except StopIteration:
+                print("raised stop iteration")
                 self.currentSource.reset_pattern()
                 self.currentSource = self.nextSourceStrategy.getNextSource()
 
@@ -32,7 +40,10 @@ class Combine(Source):
         
 
     def has_next(self):
-        return self.currentSource.has_next()
+        for source in self.sources:
+            if source.has_next():
+                return True
+        return False
 
     def reset_pattern(self, deep=False):
         for source in self.sources:

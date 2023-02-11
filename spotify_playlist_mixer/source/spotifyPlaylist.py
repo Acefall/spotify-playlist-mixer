@@ -43,3 +43,6 @@ class SpotifyPlaylist(Source):
 
     def reset_pattern(self, depp=False):
         self.nextTrack = 0
+
+    def __str__(self):
+        return self.url

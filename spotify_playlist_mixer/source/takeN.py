@@ -6,7 +6,6 @@ class TakeN(Source):
         self.n = n
         self.numberOfProvidedTracks = 0
         self.source = source
-        self.currentSource = 0
 
     def __iter__(self):
         return self
@@ -28,3 +27,6 @@ class TakeN(Source):
         self.numberOfProvidedTracks = 0
         if deep:
             self.source.reset_pattern(deep)
+
+    def __str__(self):
+        return "n: " + str(self.n) + ", numberOfProvidedTracks: " + str(self.numberOfProvidedTracks) + ", source: " + str(self.source)
