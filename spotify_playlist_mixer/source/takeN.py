@@ -15,6 +15,7 @@ class TakeN(Source):
             raise OutOfTracks()
         
         if self.numberOfProvidedTracks >= self.n:
+            print("take N raises stopiteration")
             raise StopIteration()
 
         self.numberOfProvidedTracks += 1

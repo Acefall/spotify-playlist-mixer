@@ -30,6 +30,7 @@ class Combine(Source):
                 self.hasThrownOutOfTracks[self.currentSource] = True
                 self.currentSource = self.nextSourceStrategy.getNextSource()
             except StopIteration:
+                print("cought stop itertion")
                 self.currentSource.reset_pattern()
                 self.currentSource = self.nextSourceStrategy.getNextSource()
 
