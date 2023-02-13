@@ -8,5 +8,5 @@ class Source:
     def has_next(self):
         pass
 
-    def reset_pattern(self, deep=False):
+    def reset_pattern(self):
         pass

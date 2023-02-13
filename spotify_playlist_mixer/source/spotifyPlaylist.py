@@ -58,8 +58,5 @@ class SpotifyPlaylist(Source):
     def has_next(self):
         return self.nextTrack < len(self.tracks) or self._getMoreTracks()
 
-    def reset_pattern(self, depp=False):
-        self.nextTrack = 0
-
     def __str__(self):
         return self.url

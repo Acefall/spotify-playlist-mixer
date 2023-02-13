@@ -1,5 +1,6 @@
 from spotify_playlist_mixer.source.source import Source
 from spotify_playlist_mixer.source.outOfTracks import OutOfTracks
+from spotify_playlist_mixer.source.endOfPattern import EndOfPattern
 
 class TakeN(Source):
     def __init__(self, n, source):
@@ -12,22 +13,19 @@ class TakeN(Source):
   
     def __next__(self):
         if not self.has_next():
-            raise OutOfTracks()
+            raise EndOfPattern()
         
-        if self.numberOfProvidedTracks >= self.n:
-            print("take N raises stopiteration")
-            raise StopIteration()
+        nextValue = next(self.source)
 
         self.numberOfProvidedTracks += 1
-        return next(self.source)
+        return nextValue
 
     def has_next(self):
-        return self.source.has_next()
+        return self.numberOfProvidedTracks < self.n
 
-    def reset_pattern(self, deep=False):
+    def reset_pattern(self):
         self.numberOfProvidedTracks = 0
-        if deep:
-            self.source.reset_pattern(deep)
+        self.source.reset_pattern()
 
     def __str__(self):
         return "n: " + str(self.n) + ", numberOfProvidedTracks: " + str(self.numberOfProvidedTracks) + ", source: " + str(self.source)
