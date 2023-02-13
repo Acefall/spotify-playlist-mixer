@@ -1,6 +1,5 @@
 from spotify_playlist_mixer.source.outOfTracks import OutOfTracks
 from spotify_playlist_mixer.source.source import Source
-from spotify_playlist_mixer.source.next_source_strategy.nextSourceStrategy import NextSourceStrategy
 from spotify_playlist_mixer.source.endOfPattern import EndOfPattern
 
 
@@ -32,17 +31,6 @@ class Concatenate(Source):
                 self.currentSourceIndex = sourceIndex + 1
 
         raise EndOfPattern()
-
-    def has_next(self):
-        """Returns true if the next call to __next__ will not raise a stop iteration.
-
-        Returns:
-            bool: Returns true if the next call to __next__ will not raise a stop iteration, else otherwise.
-        """
-        for sourceIndex in range(self.currentSourceIndex, len(self.sources)):
-            if self.sources[sourceIndex].has_next():
-                return True
-        return False
 
     def reset_pattern(self):
         self.currentSourceIndex = 0

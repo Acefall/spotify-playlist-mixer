@@ -12,16 +12,13 @@ class TakeN(Source):
         return self
   
     def __next__(self):
-        if not self.has_next():
+        if self.numberOfProvidedTracks >= self.n:
             raise EndOfPattern()
         
         nextValue = next(self.source)
 
         self.numberOfProvidedTracks += 1
         return nextValue
-
-    def has_next(self):
-        return self.numberOfProvidedTracks < self.n
 
     def reset_pattern(self):
         self.numberOfProvidedTracks = 0

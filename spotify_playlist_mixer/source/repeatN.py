@@ -13,8 +13,6 @@ class RepeatN(Source):
         return self
 
     def __next__(self):
-        print("n:", self.n)
-        print("iterations:", self.iterations)
         while self.iterations < self.n:
             try:
                 return next(self.source)

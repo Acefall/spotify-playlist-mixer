@@ -30,8 +30,6 @@ class SpotifyPlaylist(Source):
         
         return False
 
-
-
     def _getId(self):
         parts = self.url.split("/")
         idParts = parts[-1].split("?")
@@ -41,9 +39,6 @@ class SpotifyPlaylist(Source):
         return self
 
     def __next__(self):
-        if not self.has_next():
-            raise OutOfTracks()
-
         self.nextTrack += 1
 
         if self.nextTrack >= len(self.tracks):
@@ -54,9 +49,6 @@ class SpotifyPlaylist(Source):
             return self.tracks[self.nextTrack - 1]
         else:
             raise OutOfTracks()
-
-    def has_next(self):
-        return self.nextTrack < len(self.tracks) or self._getMoreTracks()
 
     def __str__(self):
         return self.url

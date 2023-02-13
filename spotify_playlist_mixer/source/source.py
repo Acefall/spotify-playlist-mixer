@@ -5,8 +5,5 @@ class Source:
     def __next__(self):
         pass
 
-    def has_next(self):
-        pass
-
     def reset_pattern(self):
         pass
