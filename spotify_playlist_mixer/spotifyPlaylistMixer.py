@@ -16,11 +16,11 @@ class SpotifyPlaylistMixer:
             playlist (Source): The source for the tracks
         """
         
-        tracks = []
+        trackIds = []
         for track in playlist:
-            tracks.append(track)
+            trackIds.append(track.id)
 
         newPlaylist = self.auth.user_playlist_create(self.spotifyId, name)
-        for i in range(0, len(tracks), 100):
+        for i in range(0, len(trackIds), 100):
             self.auth.user_playlist_add_tracks(
-                self.spotifyId, newPlaylist["id"], tracks[i:i+100])
+                self.spotifyId, newPlaylist["id"], trackIds[i:i+100])
