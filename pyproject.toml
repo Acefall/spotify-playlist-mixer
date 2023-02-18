@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "spotify-playlist-mixer"
-version = "0.2.0"
+version = "0.3.0"
 description = ""
 authors = ["Alexander Weinmann <me@aweinmann.de>"]
 readme = "README.md"
