@@ -1,0 +1,90 @@
+{
+    "title": "Mein Geiler Mix",
+    "type": "max-tracks",
+    "tracks": "200",
+    "shuffle": false,
+    "on-empty": "reuse",
+    "sources": [
+        {
+            "title": "9 Mal Salsa",
+            "type": "loop",
+            "count": "9",
+            "shuffle": false,
+            "sources": [
+                {
+                    "title": "Salsa Loop",
+                    "type": "use-all",
+                    "shuffle": true,
+                    "shuffle-seed": 123456789,
+                    "filters": [
+                        {
+                            "filterType": "unique"
+                        }
+                    ],
+                    "sources": [
+                        {
+                            "title": "Salslamix 1",
+                            "type": "spotify-playlist",
+                            "playlist-id": "xyz",
+                            "playlist-url": "example-url",
+                            "filters": [
+                                {
+                                    "filterType": "energy",
+                                    "min": 30,
+                                    "max": 100
+                                },
+                                {
+                                    "filterType": "duration_ms",
+                                    "min": 30,
+                                    "max": 100
+                                }
+                            ]
+                        },
+                        {
+                            "title": "Salslamix 2",
+                            "type": "spotify-playlist",
+                            "playlist-id": "xyz",
+                            "playlist-url": "example-url",
+                            "filters": [
+                                {
+                                    "filterType": "energy",
+                                    "min": 30,
+                                    "max": 50
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "title": "2 Mal Chachacha",
+            "type": "count",
+            "count": "2",
+            "shuffle": true,
+            "sources": [
+                {
+                    "title": "Chachacha 1",
+                    "type": "spotify-playlist",
+                    "playlist-id": "xyz",
+                    "playlist-url": "example-url",
+                    "filters": [
+                        {
+                            "filterType": "energy",
+                            "min": 30,
+                            "max": 100
+                        },
+                        {
+                            "filterType": "duration_ms",
+                            "min": 30,
+                            "max": 100
+                        },
+                        {
+                            "filterType": "unique"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
