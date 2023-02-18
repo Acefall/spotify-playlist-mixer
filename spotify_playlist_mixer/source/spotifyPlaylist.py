@@ -1,6 +1,6 @@
 from source.source import Source
 from source.outOfTracks import OutOfTracks
-
+from track import Track
 
 class SpotifyPlaylist(Source):
     """Provides an iterator to the ids of the tracks in a spotify playlist.
@@ -25,7 +25,7 @@ class SpotifyPlaylist(Source):
                 return False
 
         if self.response:
-            self.tracks += [item["track"]["id"] for item in self.response["items"] if item["track"]["id"] is not None]
+            self.tracks += [Track(self.auth, item["track"]) for item in self.response["items"] if item["track"]["id"] is not None]
             return True
         
         return False

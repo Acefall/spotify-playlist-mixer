@@ -3,6 +3,8 @@ from source.takeN import TakeN
 from source.concatenate import Concatenate
 from source.repeatN import RepeatN
 from source.loop import Loop
+from source.filter.numericRangeFilter import NumericRangeFilter
+from source.filter.booleanFilter import BooleanFilter
 from spotifyPlaylistMixer import SpotifyPlaylistMixer
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
@@ -27,9 +29,12 @@ bachata = SpotifyPlaylist(sp, "https://open.spotify.com/playlist/4rPVgVb4xNOpexM
 kizomba = SpotifyPlaylist(sp, "https://open.spotify.com/playlist/0RPAReDJdaECIrco82WuhC?si=388dc32d20cc43b0")
 zouk = SpotifyPlaylist(sp, "https://open.spotify.com/playlist/3BnuWDbMlEHzEnyC3zwS4q?si=9a52f63277124ee0")
 
+nonExplicitBachata = BooleanFilter(bachata, lambda track: track.explicit, False)
+highEnergyKizomba = NumericRangeFilter(kizomba, lambda track: track.get_audio_features().energy, 0.75, 1)
+
 salsaPattern = TakeN(3, salsa)
-bachataPattern = TakeN(3, bachata)
-kizombaPattern = TakeN(3, kizomba)
+bachataPattern = TakeN(3, nonExplicitBachata)
+kizombaPattern = TakeN(3, highEnergyKizomba)
 zoukPattern = TakeN(2, zouk)
 
 sbk = Concatenate([salsaPattern, bachataPattern, kizombaPattern])
@@ -40,6 +45,6 @@ sbkAndZouk = Concatenate([sbk3, zoukPattern])
 playlist = Loop(sbkAndZouk)
 
 mixer  = SpotifyPlaylistMixer(sp, spotifyId)
-mixer.create("Mixed Playlist", playlist)
+mixer.create("New Mixed Playlist", playlist)
 
 print("Done generating")
