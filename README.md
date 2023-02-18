@@ -9,10 +9,10 @@ This tool mixes spotify playlists for you based on other playlists.
 5. Run `poetry install`
 
 ## Usage
-Adjust the `dj.json` file to your needs. Change the `spotifyId` to your spotify id. Add `sources` or modify the existing ones. Make sure that the strings in the `pattern` match the `patternKey`. Also give your new playlist a fancy `newPlaylistName`.
+Adjust the `main.py` file to your needs. Change the `spotifyId` to your spotify id. Add `sources` or modify the existing ones. Also give your new playlist a fancy `newPlaylistName`.
 
 Fill in the secrets in `spotify_playlist_mixer/spotipySecrets.py`. Ask the author of this repo for details.
 
 Then run `poetry run python spotify_playlist_mixer/main.py`. This should open a new browser window. Log into your spotify account.
 
-A new playlsit should appear in your spotify profile.
+A new playlist should appear in your spotify profile.
