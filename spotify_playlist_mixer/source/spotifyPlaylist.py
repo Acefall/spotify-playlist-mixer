@@ -6,12 +6,17 @@ class SpotifyPlaylist(Source):
     """Provides an iterator to the ids of the tracks in a spotify playlist.
     """
 
-    def __init__(self, authentication: object, url=""):
+    def __init__(self, authentication: object, url="", sourceOfRandomness=None):
         self.url = url
         self.auth = authentication
         self.tracks = []
         self.nextTrack = 0
         self.response = None
+
+        if sourceOfRandomness is not None:
+            while self._getMoreTracks():
+                pass
+            sourceOfRandomness.shuffle(self.tracks)
 
     def _getMoreTracks(self):
         if self.response is None:

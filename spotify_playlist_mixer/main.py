@@ -24,7 +24,7 @@ sp = spotipy.Spotify(
                               redirect_uri="http://localhost:8080",
                               scope=scope))
 
-salsa = SpotifyPlaylist(sp, "https://open.spotify.com/playlist/5Db6luvdhq3bEGwX3zcI5P?si=1e777cc298fe4fc4")
+salsa = SpotifyPlaylist(sp, "https://open.spotify.com/playlist/5Db6luvdhq3bEGwX3zcI5P?si=1e777cc298fe4fc4", random)
 bachata = SpotifyPlaylist(sp, "https://open.spotify.com/playlist/4rPVgVb4xNOpexM22v5I72?si=8a4902de321a4f93")
 kizomba = SpotifyPlaylist(sp, "https://open.spotify.com/playlist/0RPAReDJdaECIrco82WuhC?si=388dc32d20cc43b0")
 zouk = SpotifyPlaylist(sp, "https://open.spotify.com/playlist/3BnuWDbMlEHzEnyC3zwS4q?si=9a52f63277124ee0")
