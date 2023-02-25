@@ -6,9 +6,12 @@ class SpotifyPlaylistMock(Source):
     """Mocks the class SpotifyPlaylist
     """
 
-    def __init__(self, trackIds):
+    def __init__(self, trackIds, sourceOfRandomness=None):
         self.nextTrack = 0
         self.tracks = trackIds
+
+        if sourceOfRandomness is not None:
+            sourceOfRandomness.shuffle(self.tracks)
 
     def __iter__(self):
         return self
