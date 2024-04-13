@@ -1,6 +1,7 @@
 from tests.source.spotifyPlaylistMock import SpotifyPlaylistMock
 from spotify_playlist_mixer.source.filter.booleanFilter import BooleanFilter
 from spotify_playlist_mixer.track import Track
+from spotify_playlist_mixer.audioFeatures import AudioFeatures
 from spotify_playlist_mixer.source.outOfTracks import OutOfTracks
 import pytest
 
@@ -31,33 +32,39 @@ def tracks():
             "explicit": False
         })
     ]
+    
+    tracks[0].audio_features = AudioFeatures({
+        "acousticness": 0,
+        "danceability": 0.5,
+        "energy": 1
+    })
+
+    tracks[1].audio_features = AudioFeatures({
+        "acousticness": 1,
+        "danceability": 0,
+        "energy": 0.5
+    })
+
+    tracks[2].audio_features = AudioFeatures({
+        "acousticness": 0.5,
+        "danceability": 1,
+        "energy": 0
+    })
+    
     return tracks
 
 def test_empty_source():
     playlist = SpotifyPlaylistMock([])
 
-    explicitFilter = BooleanFilter(playlist, lambda track: track.explicit, True)
+    explicitFilter = BooleanFilter(playlist, "explicit", True)
 
     with pytest.raises(OutOfTracks) as e_info:
         next(explicitFilter)
-
-def test_lambda_always_returns_true(tracks):
-    playlist = SpotifyPlaylistMock(tracks)
-
-    explicitFilter = BooleanFilter(playlist, lambda track: True, True)
-
-    assert next(explicitFilter).id == "123"
-    assert next(explicitFilter).id == "456"
-    assert next(explicitFilter).id == "789"
-
-    with pytest.raises(OutOfTracks) as e_info:
-        next(explicitFilter)
-
 
 def test_filters_out_unwanted_tracks(tracks):
     playlist = SpotifyPlaylistMock(tracks)
 
-    explicitFilter = BooleanFilter(playlist, lambda track: track.explicit, False)
+    explicitFilter = BooleanFilter(playlist, "explicit", False)
 
     assert next(explicitFilter).id == "123"
     assert next(explicitFilter).id == "789"

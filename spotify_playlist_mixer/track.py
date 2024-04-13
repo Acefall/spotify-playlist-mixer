@@ -21,6 +21,23 @@ class Track:
                 self.audio_features = AudioFeatures({})
 
         return self.audio_features
+    
+    def has_attribute(self, attribute):
+        if hasattr(self, attribute):
+            return True
+        else:
+            self.get_audio_features()
+            return not self.audio_features is None and hasattr(self.audio_features, attribute)
+    
+    def get_attribute(self, attribute):
+        if hasattr(self, attribute):
+            return getattr(self, attribute)
+        else:
+            self.get_audio_features()
+            if self.audio_features is None or not hasattr(self.audio_features, attribute):
+                return None
+            else:
+                return getattr(self.audio_features, attribute)
 
     def __str__(self):
         return f"Track {self.id} \n" \
