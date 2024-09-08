@@ -30,4 +30,9 @@ class Track:
             f"Explicit: {str(self.explicit)}\n" \
             f"=== Audio Features ===\n" \
             f"{str(self.audio_features)}"
+    
+    def __eq__(self, other):
+        if isinstance(other, Track):
+            return self.id == other.id
+        return False
 

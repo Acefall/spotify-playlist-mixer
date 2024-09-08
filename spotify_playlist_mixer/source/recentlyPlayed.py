@@ -2,26 +2,20 @@ from source.source import Source
 from source.outOfTracks import OutOfTracks
 from track import Track
 
-class SpotifyPlaylist(Source):
-    """Provides an iterator to the ids of the tracks in a spotify playlist.
+class RecentlyPlayed(Source):
+    """Provides an iterator to the ids of the last 50 tracks which were recently played by a user.
     """
 
-    def __init__(self, authentication: object, url="", sourceOfRandomness=None):
-        self.url = url
+    def __init__(self, authentication: object):
         self.auth = authentication
         self.tracks = []
         self.nextTrack = 0
         self.response = None
 
-        if sourceOfRandomness is not None:
-            while self._getMoreTracks():
-                pass
-            sourceOfRandomness.shuffle(self.tracks)
-
     def _getMoreTracks(self):
         if self.response is None:
             # Request for the first time
-            self.response = self.auth.playlist_tracks(self._getId())   
+            self.response = self.auth.current_user_recently_played()   
         else:
             if self.response and self.response["next"]:
                 # Request again
@@ -35,10 +29,6 @@ class SpotifyPlaylist(Source):
         
         return False
 
-    def _getId(self):
-        parts = self.url.split("/")
-        idParts = parts[-1].split("?")
-        return idParts[0]
 
     def __iter__(self):
         return self
@@ -56,7 +46,7 @@ class SpotifyPlaylist(Source):
             raise OutOfTracks()
 
     def __str__(self):
-        return self.url
+        return "Recently Played"
     
     def __contains__(self, track):
         # get all tracks of the playlist

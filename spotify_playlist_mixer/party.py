@@ -27,29 +27,21 @@ sp = spotipy.Spotify(
                               scope=scope))
 
 recentlyPlayed = RecentlyPlayed(sp)
-salsa = SpotifyPlaylist(sp, "https://open.spotify.com/playlist/5Db6luvdhq3bEGwX3zcI5P?si=1e777cc298fe4fc4", random)
-bachata = SpotifyPlaylist(sp, "https://open.spotify.com/playlist/4rPVgVb4xNOpexM22v5I72?si=8a4902de321a4f93")
-kizomba = SpotifyPlaylist(sp, "https://open.spotify.com/playlist/0RPAReDJdaECIrco82WuhC?si=388dc32d20cc43b0")
-zouk = SpotifyPlaylist(sp, "https://open.spotify.com/playlist/3BnuWDbMlEHzEnyC3zwS4q?si=9a52f63277124ee0")
+salsa = SetMinus(SpotifyPlaylist(sp, "https://open.spotify.com/playlist/6SzueO7QgQjoPicIO9Lkqn?si=583b8f8a58804bb7", random), recentlyPlayed)
+bachata = SetMinus(SpotifyPlaylist(sp, "https://open.spotify.com/playlist/5SqR3iQ1rvzjjB8vEPlF8d?si=214125cac5744fd7", random), recentlyPlayed)
+kizomba = SetMinus(SpotifyPlaylist(sp, "https://open.spotify.com/playlist/37i9dQZF1DX1l6qs3gcM4U?si=075ff6e61bc24fd0", random), recentlyPlayed)
+kizombaSensual = SetMinus(SpotifyPlaylist(sp, "https://open.spotify.com/playlist/4VFLaOUZDWFsDWbZmCpqP3?si=b48dc3c40720435b", random), recentlyPlayed)
 
-freshSalsa = SetMinus(salsa, recentlyPlayed)
+salsaPattern = TakeN(3, salsa)
+bachataPattern = TakeN(3, bachata)
+kizombaSensualPattern = TakeN(2, kizomba)
+kizombaPattern = TakeN(1, kizomba)
 
-nonExplicitBachata = BooleanFilter(bachata, lambda track: track.explicit, False)
-highEnergyKizomba = NumericRangeFilter(kizomba, lambda track: track.get_audio_features().energy, 0.75, 1)
+sbk = Concatenate([salsaPattern, bachataPattern, kizombaSensualPattern, kizombaPattern])
 
-salsaPattern = TakeN(3, freshSalsa)
-bachataPattern = TakeN(3, nonExplicitBachata)
-kizombaPattern = TakeN(3, highEnergyKizomba)
-zoukPattern = TakeN(2, zouk)
-
-sbk = Concatenate([salsaPattern, bachataPattern, kizombaPattern])
-sbk3 = RepeatN(3, sbk)
-sbkAndZouk = Concatenate([sbk3, zoukPattern])
-
-
-playlist = Loop(sbkAndZouk)
+playlist = Loop(sbk)
 
 mixer  = SpotifyPlaylistMixer(sp, spotifyId)
-mixer.create("New Mixed Playlist", playlist)
+mixer.create("Party 2024-09-07", playlist)
 
 print("Done generating")
