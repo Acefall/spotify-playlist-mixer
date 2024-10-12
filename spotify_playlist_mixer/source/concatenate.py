@@ -6,8 +6,6 @@ from spotify_playlist_mixer.source.endOfPattern import EndOfPattern
 class Concatenate(Source):
     """This class takes tracks from the first playlist until it raises a stop iteration.
     Then it switches to the next palylist until it raises a stop iteration.
-
-    One AlternatingInteralce reaches the stop iteration of the last source, it also raiese a stop iteration.
     """
 
     def __init__(self, sources):
