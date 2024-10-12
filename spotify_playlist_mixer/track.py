@@ -35,4 +35,7 @@ class Track:
         if isinstance(other, Track):
             return self.id == other.id
         return False
+    
+    def __hash__(self):
+        return self.id.__hash__()
 

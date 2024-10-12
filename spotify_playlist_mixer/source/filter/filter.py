@@ -1,6 +1,4 @@
 from spotify_playlist_mixer.source.source import Source
-from spotify_playlist_mixer.source.outOfTracks import OutOfTracks
-import math
 
 class Filter(Source):
     def __init__(self, source):
