@@ -1,6 +1,8 @@
-from source.source import Source
-from source.outOfTracks import OutOfTracks
-from track import Track
+import json
+
+from spotify_playlist_mixer.source.source import Source
+from spotify_playlist_mixer.source.outOfTracks import OutOfTracks
+from spotify_playlist_mixer.track import Track
 
 class SpotifyPlaylist(Source):
     """Provides an iterator to the ids of the tracks in a spotify playlist.
@@ -64,4 +66,17 @@ class SpotifyPlaylist(Source):
             pass
 
         return track in self.tracks
+    
+    def toDict(self):
+        return {
+            "type": self.__class__.__name__,
+            "url": self.url
+        }
+    
+    def setAuthentication(self, authentication):
+        self.auth = authentication
+    
+    @classmethod
+    def fromDict(cls, data, deserializer=None):
+        return cls(None, data["url"]) 
 
