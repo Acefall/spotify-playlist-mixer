@@ -3,6 +3,8 @@ from spotify_playlist_mixer.source.endOfPattern import EndOfPattern
 from spotify_playlist_mixer.source.concatenate import Concatenate
 from spotify_playlist_mixer.source.takeN import TakeN
 from spotify_playlist_mixer.source.repeatN import RepeatN
+from spotify_playlist_mixer.source.spotifyPlaylist import SpotifyPlaylist
+from spotify_playlist_mixer.derserializer import Deserializer
 import pytest
 
 def test_repeat_n_equals_one_has_no_effect():
@@ -73,3 +75,15 @@ def test_reset_pattern():
 
     with pytest.raises(EndOfPattern) as e_info:
         next(repeatN)
+
+def test_to_and_from_dict_happy_path():
+    playlist = SpotifyPlaylist(None, "my/nice/playlist1")
+
+    repeatN = RepeatN(42, playlist)
+
+    repeatNDict = repeatN.toDict()
+
+    repeatNFromDict = RepeatN.fromDict(repeatNDict, Deserializer)
+
+    assert repeatN.source.url == repeatNFromDict.source.url
+    assert repeatN.n == repeatNFromDict.n

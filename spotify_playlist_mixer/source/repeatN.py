@@ -24,3 +24,14 @@ class RepeatN(Source):
     def reset_pattern(self):
         self.iterations = 0
         self.source.reset_pattern()
+
+    def toDict(self):
+        return {
+            "type": self.__class__.__name__,
+            "n": self.n,
+            "source": self.source.toDict()
+        }
+    
+    @classmethod
+    def fromDict(cls, data, deserializer):
+        return cls(data["n"], deserializer.fromDict(data["source"]))

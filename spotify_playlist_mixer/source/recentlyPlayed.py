@@ -54,4 +54,13 @@ class RecentlyPlayed(Source):
             pass
 
         return track in self.tracks
+    
+    def toDict(self):
+        return {
+            "type": self.__class__.__name__
+        }
+    
+    @classmethod
+    def fromDict(cls, data=dict(), deserializer=None):
+        return cls()
 

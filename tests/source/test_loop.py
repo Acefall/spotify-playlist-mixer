@@ -5,6 +5,9 @@ from spotify_playlist_mixer.source.concatenate import Concatenate
 from spotify_playlist_mixer.source.takeN import TakeN
 from spotify_playlist_mixer.source.loop import Loop
 from spotify_playlist_mixer.source.repeatN import RepeatN
+from spotify_playlist_mixer.source.spotifyPlaylist import SpotifyPlaylist
+from spotify_playlist_mixer.derserializer import Deserializer
+
 import pytest
 
 def test_loop_until_out_of_tracks():
@@ -44,3 +47,14 @@ def test_loop_over_two_take_two():
 
     with pytest.raises(OutOfTracks) as e_info:
         next(loop)
+
+def test_to_and_from_dict_happy_path():
+    playlist = SpotifyPlaylist(None, "my/nice/playlist1")
+
+    loop = Loop(playlist)
+
+    loopDict = loop.toDict()
+
+    loopFromDict = Loop.fromDict(loopDict, Deserializer)
+
+    assert loopFromDict.source.url == loopFromDict.source.url
