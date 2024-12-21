@@ -56,7 +56,7 @@ def tracks():
 def test_empty_source():
     playlist = SpotifyPlaylistMock([])
 
-    acousticFilter = NumericRangeFilter(playlist, lambda track: track.get_audio_features().acousticness, 0, 0.5)
+    acousticFilter = NumericRangeFilter(playlist, "acousticness", 0, 0.5)
 
     with pytest.raises(OutOfTracks) as e_info:
         next(acousticFilter)
@@ -64,7 +64,7 @@ def test_empty_source():
 def test_filters_unwanted_tracks(tracks):
     playlist = SpotifyPlaylistMock(tracks)
 
-    acousticFilter = NumericRangeFilter(playlist, lambda track: track.get_audio_features().acousticness, 0, 0.5)
+    acousticFilter = NumericRangeFilter(playlist, "acousticness", 0, 0.5)
 
     assert next(acousticFilter).id == "123"
     assert next(acousticFilter).id == "789"
@@ -76,7 +76,7 @@ def test_filters_unwanted_tracks(tracks):
 def test_filters_nothing_when_set_to_maximum_range(tracks):
     playlist = SpotifyPlaylistMock(tracks)
 
-    acousticFilter = NumericRangeFilter(playlist, lambda track: track.get_audio_features().acousticness, 0, 1)
+    acousticFilter = NumericRangeFilter(playlist, "acousticness", 0, 1)
 
     assert next(acousticFilter).id == "123"
     assert next(acousticFilter).id == "456"
@@ -88,7 +88,7 @@ def test_filters_nothing_when_set_to_maximum_range(tracks):
 def test_flipped_lower_and_upper_limit(tracks):
     playlist = SpotifyPlaylistMock(tracks)
 
-    acousticFilter = NumericRangeFilter(playlist, lambda track: track.get_audio_features().acousticness, 0.5, 0)
+    acousticFilter = NumericRangeFilter(playlist, "acousticness", 0.5, 0)
 
     assert next(acousticFilter).id == "123"
     assert next(acousticFilter).id == "789"
@@ -100,8 +100,8 @@ def test_flipped_lower_and_upper_limit(tracks):
 def test_chained_filters_act_like_logical_and(tracks):
     playlist = SpotifyPlaylistMock(tracks)
 
-    acousticFilter = NumericRangeFilter(playlist, lambda track: track.get_audio_features().acousticness, 0, 0.5)
-    danceabilityFilter = NumericRangeFilter(acousticFilter, lambda track: track.get_audio_features().danceability, 0.75, 1)
+    acousticFilter = NumericRangeFilter(playlist, "acousticness", 0, 0.5)
+    danceabilityFilter = NumericRangeFilter(acousticFilter, "danceability", 0.75, 1)
 
     assert next(danceabilityFilter).id == "789"
 

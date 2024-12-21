@@ -21,6 +21,9 @@ class Track:
                 self.audio_features = AudioFeatures({})
 
         return self.audio_features
+    
+    def __getattr__(self, name):
+        return getattr(self.get_audio_features(), name)
 
     def __str__(self):
         return f"Track {self.id} \n" \

@@ -8,17 +8,12 @@ class SpotifyPlaylist(Source):
     """Provides an iterator to the ids of the tracks in a spotify playlist.
     """
 
-    def __init__(self, authentication: object, url="", sourceOfRandomness=None):
+    def __init__(self, authentication: object, url=""):
         self.url = url
         self.auth = authentication
         self.tracks = []
         self.nextTrack = 0
         self.response = None
-
-        if sourceOfRandomness is not None:
-            while self._getMoreTracks():
-                pass
-            sourceOfRandomness.shuffle(self.tracks)
 
     def _getMoreTracks(self):
         if self.response is None:
@@ -67,9 +62,8 @@ class SpotifyPlaylist(Source):
 
         return track in self.tracks
     
-    def toDict(self):
+    def serialize(self, serializer):
         return {
-            "type": self.__class__.__name__,
             "url": self.url
         }
     
@@ -77,6 +71,6 @@ class SpotifyPlaylist(Source):
         self.auth = authentication
     
     @classmethod
-    def fromDict(cls, data, deserializer=None):
-        return cls(None, data["url"]) 
+    def deserialize(cls, data, deserializer):
+        return cls(deserializer.auth, data["url"]) 
 

@@ -35,16 +35,17 @@ class Concatenate(Source):
         for source in self.sources:
             source.reset_pattern()
 
-    def toDict(self):
+    def serialize(self, serializer):
         return {
-            "type": self.__class__.__name__,
-            "sources": list([source.toDict() for source in self.sources])
+            "sources": list([serializer.serialize(source) for source in self.sources])
         }
     
     @classmethod
-    def fromDict(cls, data, deserializer):     
+    def deserialize(cls, data, deserializer):
         sources = []
-        print("Data in Conactente:", data)
+
         for sourceDict in data["sources"]:
-            sources.append(deserializer.fromDict(sourceDict))
+            sources.append(deserializer.deserialize(sourceDict))
+
         return cls(sources)
+    

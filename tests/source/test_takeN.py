@@ -1,6 +1,9 @@
 from spotify_playlist_mixer.source.takeN import TakeN
 from tests.source.spotifyPlaylistMock import SpotifyPlaylistMock
 from spotify_playlist_mixer.source.outOfTracks import OutOfTracks
+from spotify_playlist_mixer.source.spotifyPlaylist import SpotifyPlaylist
+from spotify_playlist_mixer.derserializer import Deserializer
+
 import pytest
 
 def test_take_zero_throws_with_first_call():
@@ -66,3 +69,14 @@ def test_resets_after_is_resetted_before_throw():
     with pytest.raises(StopIteration) as e_info:
         next(takeN)
 
+def test_to_and_from_dict_happy_path():
+    playlist = SpotifyPlaylist(None, "my/nice/playlist1")
+
+    takeN = TakeN(42, playlist)
+
+    takeNDict = takeN.toDict()
+
+    takeNFromDict = TakeN.fromDict(takeNDict, Deserializer)
+
+    assert takeN.source.url == takeNFromDict.source.url
+    assert takeN.n == takeNFromDict.n

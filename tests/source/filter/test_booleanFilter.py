@@ -1,5 +1,5 @@
 from tests.source.spotifyPlaylistMock import SpotifyPlaylistMock
-from spotify_playlist_mixer.source.filter.booleanFilter import BooleanFilter
+from spotify_playlist_mixer.source.filter.equalityFilter import EqualityFilter
 from spotify_playlist_mixer.track import Track
 from spotify_playlist_mixer.source.outOfTracks import OutOfTracks
 import pytest
@@ -36,19 +36,7 @@ def tracks():
 def test_empty_source():
     playlist = SpotifyPlaylistMock([])
 
-    explicitFilter = BooleanFilter(playlist, lambda track: track.explicit)
-
-    with pytest.raises(OutOfTracks) as e_info:
-        next(explicitFilter)
-
-def test_lambda_always_returns_true(tracks):
-    playlist = SpotifyPlaylistMock(tracks)
-
-    explicitFilter = BooleanFilter(playlist, lambda track: True)
-
-    assert next(explicitFilter).id == "123"
-    assert next(explicitFilter).id == "456"
-    assert next(explicitFilter).id == "789"
+    explicitFilter = EqualityFilter(playlist, "explicit", True)
 
     with pytest.raises(OutOfTracks) as e_info:
         next(explicitFilter)
@@ -57,7 +45,7 @@ def test_lambda_always_returns_true(tracks):
 def test_filters_out_unwanted_tracks(tracks):
     playlist = SpotifyPlaylistMock(tracks)
 
-    explicitFilter = BooleanFilter(playlist, lambda track: not track.explicit)
+    explicitFilter = EqualityFilter(playlist, "explicit", False)
 
     assert next(explicitFilter).id == "123"
     assert next(explicitFilter).id == "789"

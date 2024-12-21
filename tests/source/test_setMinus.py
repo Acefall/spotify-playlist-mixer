@@ -2,6 +2,9 @@ from tests.source.spotifyPlaylistMock import SpotifyPlaylistMock
 from spotify_playlist_mixer.source.outOfTracks import OutOfTracks
 from spotify_playlist_mixer.source.endOfPattern import EndOfPattern
 from spotify_playlist_mixer.source.setMinus import SetMinus
+from spotify_playlist_mixer.source.spotifyPlaylist import SpotifyPlaylist
+from spotify_playlist_mixer.derserializer import Deserializer
+
 import pytest
 
 def test_empty_second_source_does_not_subtract_anything():
@@ -38,3 +41,17 @@ def test_happy_path_some_elements_are_subtracted():
 
     with pytest.raises(OutOfTracks) as e_info:
         next(subtracted)
+
+
+def test_to_and_from_dict_happy_path():
+    playlist1 = SpotifyPlaylist(None, "my/nice/playlist1")
+    playlist2 = SpotifyPlaylist(None, "do/not/like/these/tracks")
+
+    setMinus = SetMinus(playlist1, playlist2)
+
+    setMinusDict = setMinus.toDict()
+
+    setMinusFromDict = SetMinus.fromDict(setMinusDict, Deserializer)
+
+    assert setMinus.source1.url == setMinusFromDict.source1.url
+    assert setMinus.source2.url == setMinusFromDict.source2.url

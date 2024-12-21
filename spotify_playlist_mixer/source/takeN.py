@@ -26,3 +26,14 @@ class TakeN(Source):
 
     def __str__(self):
         return "n: " + str(self.n) + ", numberOfProvidedTracks: " + str(self.numberOfProvidedTracks) + ", source: " + str(self.source)
+
+   
+    def serialize(self, serializer):
+        return {
+            "n": self.n,
+            "source": serializer.serialize(self.source)
+        }
+    
+    @classmethod
+    def deserialize(cls, data, deserializer):
+        return cls(data["n"], deserializer.deserialize(data["source"]))

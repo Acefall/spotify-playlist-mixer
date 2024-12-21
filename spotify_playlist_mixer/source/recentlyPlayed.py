@@ -1,6 +1,6 @@
-from source.source import Source
-from source.outOfTracks import OutOfTracks
-from track import Track
+from spotify_playlist_mixer.source.source import Source
+from spotify_playlist_mixer.source.outOfTracks import OutOfTracks
+from spotify_playlist_mixer.track import Track
 
 class RecentlyPlayed(Source):
     """Provides an iterator to the ids of the last 50 tracks which were recently played by a user.
@@ -54,13 +54,11 @@ class RecentlyPlayed(Source):
             pass
 
         return track in self.tracks
-    
-    def toDict(self):
-        return {
-            "type": self.__class__.__name__
-        }
+       
+    def serialize(self, serializer):
+        return {}
     
     @classmethod
-    def fromDict(cls, data=dict(), deserializer=None):
-        return cls()
+    def deserialize(cls, data, deserializer):
+        return cls(deserializer.auth)
 

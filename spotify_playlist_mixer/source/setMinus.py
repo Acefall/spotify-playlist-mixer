@@ -26,3 +26,17 @@ class SetMinus(Source):
 
     def reset_pattern(self):
         pass
+
+   
+    def serialize(self, serializer):
+        return {
+            "source1": serializer.serialize(self.source1),
+            "source2": serializer.serialize(self.source2)
+        }
+    
+    @classmethod
+    def deserialize(cls, data, deserializer):
+        return cls(deserializer.deserialize(data["source1"]), deserializer.deserialize(data["source2"]))
+    
+
+    

@@ -20,12 +20,12 @@ class Loop(Source):
     def reset_pattern(self):
         self.source.reset_pattern()
 
-    def toDict(self):
+
+    def serialize(self, serializer):
         return {
-            "type": self.__class__.__name__,
-            "source": self.source.toDict()
+            "source": serializer.serialize(self.source)
         }
-    
+
     @classmethod
     def fromDict(cls, data, deserializer):
         return cls(deserializer.fromDict(data["source"]))
