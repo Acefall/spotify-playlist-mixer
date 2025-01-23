@@ -35,11 +35,10 @@ zouk = SpotifyPlaylist(sp, "https://open.spotify.com/playlist/3BnuWDbMlEHzEnyC3z
 freshSalsa = SetMinus(salsa, recentlyPlayed)
 
 nonExplicitBachata = BooleanFilter(bachata, lambda track: track.explicit, False)
-highEnergyKizomba = NumericRangeFilter(kizomba, lambda track: track.get_audio_features().energy, 0.75, 1)
 
 salsaPattern = TakeN(3, freshSalsa)
 bachataPattern = TakeN(3, nonExplicitBachata)
-kizombaPattern = TakeN(3, highEnergyKizomba)
+kizombaPattern = TakeN(3, kizomba)
 zoukPattern = TakeN(2, zouk)
 
 sbk = Concatenate([salsaPattern, bachataPattern, kizombaPattern])
