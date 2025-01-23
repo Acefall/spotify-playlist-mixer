@@ -33,4 +33,4 @@ class RepeatN(Source):
 
     @classmethod
     def deserialize(cls, data, deserializer):
-        return cls(data["n"], deserializer.deserializer(data["source"]))
+        return cls(data["n"], deserializer.deserialize(data["source"]))

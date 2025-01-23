@@ -27,5 +27,5 @@ class DistinctFilter(Filter):
 
     @classmethod
     def deserialize(cls, data, deserializer):
-        return cls(deserializer.deserializer(data["source"]), deserializer.deserializer(data["observedTracks"]))
+        return cls(deserializer.deserialize(data["source"]), deserializer.deserialize(data["observedTracks"]))
     

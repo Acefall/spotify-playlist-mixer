@@ -13,3 +13,14 @@ class EqualityFilter(Filter):
             if attributeValue == self.expectedValue:
                 return track
         raise OutOfTracks
+    
+    def serialize(self, serializer):
+        return {
+            "source": serializer.serialize(self.source),
+            "attribute": self.attribute,
+            "expectedValue" : self.expectedValue
+        }
+
+    @classmethod
+    def deserialize(cls, data, deserializer):
+        return cls(deserializer.deserialize(data["source"]), data["attribute"], data["expectedValue"])

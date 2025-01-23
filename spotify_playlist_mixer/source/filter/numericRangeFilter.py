@@ -14,3 +14,15 @@ class NumericRangeFilter(Filter):
             if attributeValue >= self.minAttribute and attributeValue <= self.maxAttribute:
                 return track
         raise OutOfTracks
+    
+    def serialize(self, serializer):
+        return {
+            "source": serializer.serialize(self.source),
+            "attribute": self.attribute,
+            "minAttribute" : self.minAttribute,
+            "maxAttribute" : self.maxAttribute
+        }
+
+    @classmethod
+    def deserialize(cls, data, deserializer):
+        return cls(deserializer.deserialize(data["source"]), data["attribute"], data["minAttribute"], data["maxAttribute"])
