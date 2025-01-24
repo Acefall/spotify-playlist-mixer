@@ -28,8 +28,10 @@ def test_serialization_and_deserialization_happy_path():
     deserialized = deserializer.deserialize(serialized)
 
     assert isinstance(deserialized, SpotifyPlaylistMock)
-    assert next(deserialized) == "s1"
-    assert next(deserialized) == "s2"
-    assert next(deserialized) == "s3"
+    for originalTrack, deserializedTrack in zip(playlist, deserialized):
+        assert originalTrack == deserializedTrack
+
+    with pytest.raises(OutOfTracks) as e_info:
+        next(deserialized)
     
 

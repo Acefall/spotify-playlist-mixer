@@ -67,8 +67,9 @@ def test_serialization_and_deserialization_happy_path(tracks):
     deserialized = deserializer.deserialize(serialized)
 
     assert isinstance(deserialized, EqualityFilter)
-    assert next(deserialized).id == "123"
-    assert next(deserialized).id == "789"
+    
+    for originalTrack, deserializedTrack in zip(explicitFilter, deserialized):
+        assert originalTrack.id == deserializedTrack.id
 
     with pytest.raises(OutOfTracks) as e_info:
         next(deserialized)

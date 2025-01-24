@@ -104,8 +104,9 @@ def test_serialization_and_deserialization_happy_path(tracks):
     deserialized = deserializer.deserialize(serialized)
 
     assert isinstance(deserialized, NumericRangeFilter)
-    assert next(deserialized).id == "456"
-    assert next(deserialized).id == "789"
+
+    for originalTrack, deserializedTrack in zip(popularityFilter, deserialized):
+        assert originalTrack.id == deserializedTrack.id
 
     with pytest.raises(OutOfTracks) as e_info:
         next(deserialized)
