@@ -5,6 +5,10 @@ from spotify_playlist_mixer.source.recentlyPlayed import RecentlyPlayed
 from spotify_playlist_mixer.source.repeatN import RepeatN
 from spotify_playlist_mixer.source.setMinus import SetMinus
 from spotify_playlist_mixer.source.takeN import TakeN
+from spotify_playlist_mixer.source.filter.numericRangeFilter import NumericRangeFilter
+from spotify_playlist_mixer.source.filter.equalityFilter import EqualityFilter
+from spotify_playlist_mixer.source.filter.distinctFilter import DistinctFilter
+from spotify_playlist_mixer.source.filter.distinctFilterSet import DistinctFilterSet
 
 
 class Deserializer():
@@ -15,7 +19,11 @@ class Deserializer():
         'RepeatN': RepeatN,
         'SetMinus': SetMinus,
         'SpotifyPlaylist': SpotifyPlaylist,
-        'TakeN': TakeN
+        'TakeN': TakeN,
+        'NumericRangeFilter': NumericRangeFilter,
+        "EqualityFilter": EqualityFilter,
+        "DistinctFilter": DistinctFilter,
+        "DistinctFilterSet": DistinctFilterSet,
     }
 
     def __init__(self, serializedObjects, auth=None):

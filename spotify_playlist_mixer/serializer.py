@@ -24,3 +24,6 @@ class Serializer():
 
         return objectAsDict
     
+    def getObjects(self):
+        return self.objects
+    

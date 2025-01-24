@@ -2,6 +2,8 @@ from tests.source.spotifyPlaylistMock import SpotifyPlaylistMock
 from spotify_playlist_mixer.source.filter.numericRangeFilter import NumericRangeFilter
 from spotify_playlist_mixer.track import Track
 from spotify_playlist_mixer.source.outOfTracks import OutOfTracks
+from spotify_playlist_mixer.serializer import Serializer
+from spotify_playlist_mixer.derserializer import Deserializer
 import pytest
 
 
@@ -88,3 +90,22 @@ def test_chained_filters_act_like_logical_and(tracks):
 
     with pytest.raises(OutOfTracks) as e_info:
         next(popularityFilter2)
+
+
+def test_serialization_and_deserialization_happy_path(tracks):
+    playlist = SpotifyPlaylistMock(tracks)
+    popularityFilter = NumericRangeFilter(playlist, "popularity", 50, 100)
+
+    serializer = Serializer()
+    serialized = serializer.serialize(popularityFilter)
+
+    deserializer = Deserializer(serializer.getObjects())
+    deserializer.class_map["SpotifyPlaylistMock"] = SpotifyPlaylistMock
+    deserialized = deserializer.deserialize(serialized)
+
+    assert isinstance(deserialized, NumericRangeFilter)
+    assert next(deserialized).id == "456"
+    assert next(deserialized).id == "789"
+
+    with pytest.raises(OutOfTracks) as e_info:
+        next(deserialized)
