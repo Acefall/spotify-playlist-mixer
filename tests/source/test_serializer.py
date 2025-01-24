@@ -95,4 +95,4 @@ def test_cyclic_dependency_results_in_two_serialized_objects():
     assert "data" in serializer.objects[1]
     assert "child" in serializer.objects[0]["data"]
     
-
+    

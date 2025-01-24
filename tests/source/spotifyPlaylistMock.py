@@ -27,3 +27,12 @@ class SpotifyPlaylistMock(Source):
     
     def __contains__(self, track):
         return track in self.tracks
+    
+    def serialize(self, serializer):
+        return {
+            "tracks": self.tracks
+        }
+    
+    @classmethod
+    def deserialize(cls, data, deserializer):
+        return cls(data["tracks"])
