@@ -1,8 +1,10 @@
 from spotify_playlist_mixer.source.takeN import TakeN
 from tests.source.spotifyPlaylistMock import SpotifyPlaylistMock
+from spotify_playlist_mixer.source.endOfPattern import EndOfPattern
 from spotify_playlist_mixer.source.outOfTracks import OutOfTracks
 from spotify_playlist_mixer.source.spotifyPlaylist import SpotifyPlaylist
 from spotify_playlist_mixer.derserializer import Deserializer
+from spotify_playlist_mixer.serializer import Serializer
 
 import pytest
 
@@ -69,14 +71,31 @@ def test_resets_after_is_resetted_before_throw():
     with pytest.raises(StopIteration) as e_info:
         next(takeN)
 
-def test_to_and_from_dict_happy_path():
-    playlist = SpotifyPlaylist(None, "my/nice/playlist1")
+def test_serialization_and_deserialization_happy_path():
+    playlist = SpotifyPlaylistMock([1, 2, 3, 4])
+    takeN = TakeN(3, playlist)
 
-    takeN = TakeN(42, playlist)
+    serializer = Serializer()
+    serialized = serializer.serialize(takeN)
 
-    takeNDict = takeN.toDict()
+    deserializer = Deserializer(serializer.getObjects())
+    deserializer.class_map["SpotifyPlaylistMock"] = SpotifyPlaylistMock
+    deserialized = deserializer.deserialize(serialized)
 
-    takeNFromDict = TakeN.fromDict(takeNDict, Deserializer)
+    assert isinstance(deserialized, TakeN)
+    
+    for originalTrack, deserializedTrack in zip(takeN, deserialized):
+        assert originalTrack == deserializedTrack
 
-    assert takeN.source.url == takeNFromDict.source.url
-    assert takeN.n == takeNFromDict.n
+    with pytest.raises(EndOfPattern) as e_info:
+        next(deserialized)
+
+    takeN.reset_pattern()
+    deserialized.reset_pattern()
+
+    for originalTrack, deserializedTrack in zip(takeN, deserialized):
+        assert originalTrack == deserializedTrack
+    
+    with pytest.raises(OutOfTracks) as e_info:
+        next(deserialized)
+

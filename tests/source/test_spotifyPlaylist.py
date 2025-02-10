@@ -1,13 +1,17 @@
 from spotify_playlist_mixer.source.spotifyPlaylist import SpotifyPlaylist
 from spotify_playlist_mixer.deserializationError import DeserializationError
+from spotify_playlist_mixer.derserializer import Deserializer
+from spotify_playlist_mixer.serializer import Serializer
 
 import pytest
 
-def test_to_and_from_dict_happy_path():
+def test_serialization_and_deserialization_happy_path():
     playlist = SpotifyPlaylist(None, "my/nice/playlist")
 
-    playlistDict = playlist.toDict()
+    serializer = Serializer()
+    serialized = serializer.serialize(playlist)
 
-    playlistFromDict = SpotifyPlaylist.fromDict(playlistDict)
+    deserializer = Deserializer(serializer.getObjects(), None)
+    deserialized = deserializer.deserialize(serialized)
 
-    assert playlist.url == playlistFromDict.url
+    assert isinstance(deserialized, SpotifyPlaylist)

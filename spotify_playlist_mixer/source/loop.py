@@ -26,6 +26,7 @@ class Loop(Source):
             "source": serializer.serialize(self.source)
         }
 
+   
     @classmethod
-    def fromDict(cls, data, deserializer):
-        return cls(deserializer.fromDict(data["source"]))
+    def deserialize(cls, data, deserializer):
+        return cls(deserializer.deserialize(data["source"]))

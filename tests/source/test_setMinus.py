@@ -4,6 +4,7 @@ from spotify_playlist_mixer.source.endOfPattern import EndOfPattern
 from spotify_playlist_mixer.source.setMinus import SetMinus
 from spotify_playlist_mixer.source.spotifyPlaylist import SpotifyPlaylist
 from spotify_playlist_mixer.derserializer import Deserializer
+from spotify_playlist_mixer.serializer import Serializer
 
 import pytest
 
@@ -43,15 +44,22 @@ def test_happy_path_some_elements_are_subtracted():
         next(subtracted)
 
 
-def test_to_and_from_dict_happy_path():
-    playlist1 = SpotifyPlaylist(None, "my/nice/playlist1")
-    playlist2 = SpotifyPlaylist(None, "do/not/like/these/tracks")
-
+def test_serialization_and_deserialization_happy_path():
+    playlist1 = SpotifyPlaylistMock([1, 2, 3, 4, 5])
+    playlist2 = SpotifyPlaylistMock([2, 5, 6])
     setMinus = SetMinus(playlist1, playlist2)
 
-    setMinusDict = setMinus.toDict()
+    serializer = Serializer()
+    serialized = serializer.serialize(setMinus)
 
-    setMinusFromDict = SetMinus.fromDict(setMinusDict, Deserializer)
+    deserializer = Deserializer(serializer.getObjects())
+    deserializer.class_map["SpotifyPlaylistMock"] = SpotifyPlaylistMock
+    deserialized = deserializer.deserialize(serialized)
 
-    assert setMinus.source1.url == setMinusFromDict.source1.url
-    assert setMinus.source2.url == setMinusFromDict.source2.url
+    assert isinstance(deserialized, SetMinus)
+    
+    for originalTrack, deserializedTrack in zip(setMinus, deserialized):
+        assert originalTrack == deserializedTrack
+
+    with pytest.raises(OutOfTracks) as e_info:
+        next(deserialized)

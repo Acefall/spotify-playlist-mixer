@@ -88,7 +88,7 @@ def test_serialization_and_deserialization_happy_path(tracks):
     assert isinstance(deserialized2, DistinctFilter)
     assert next(deserialized1).id == "123"
     assert next(deserialized2).id == "456"
-    assert next(deserialized2).id == "789"
+    assert next(deserialized1).id == "789"
 
     with pytest.raises(OutOfTracks) as e_info:
         next(deserialized1)

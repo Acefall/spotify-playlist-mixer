@@ -7,6 +7,7 @@ from spotify_playlist_mixer.source.loop import Loop
 from spotify_playlist_mixer.source.repeatN import RepeatN
 from spotify_playlist_mixer.source.spotifyPlaylist import SpotifyPlaylist
 from spotify_playlist_mixer.derserializer import Deserializer
+from spotify_playlist_mixer.serializer import Serializer
 
 import pytest
 
@@ -48,13 +49,23 @@ def test_loop_over_two_take_two():
     with pytest.raises(OutOfTracks) as e_info:
         next(loop)
 
-def test_to_and_from_dict_happy_path():
-    playlist = SpotifyPlaylist(None, "my/nice/playlist1")
+def test_serialization_and_deserialization_happy_path():
+    playlist = SpotifyPlaylistMock([1, 2, 3, 4, 5, 6, 7, 8, 9])
+    takeN = TakeN(2, playlist)
+    loop = Loop(takeN)
 
-    loop = Loop(playlist)
+    serializer = Serializer()
+    serialized = serializer.serialize(loop)
 
-    loopDict = loop.toDict()
+    deserializer = Deserializer(serializer.getObjects())
+    deserializer.class_map["SpotifyPlaylistMock"] = SpotifyPlaylistMock
+    deserialized = deserializer.deserialize(serialized)
 
-    loopFromDict = Loop.fromDict(loopDict, Deserializer)
+    assert isinstance(deserialized, Loop)
+    
+    for originalTrack, deserializedTrack in zip(takeN, deserialized):
+        assert originalTrack == deserializedTrack
 
-    assert loopFromDict.source.url == loopFromDict.source.url
+    with pytest.raises(OutOfTracks) as e_info:
+        next(deserialized)
+
