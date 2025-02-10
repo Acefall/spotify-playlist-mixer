@@ -5,8 +5,8 @@ from source.concatenate import Concatenate
 from source.setMinus import SetMinus
 from source.repeatN import RepeatN
 from source.loop import Loop
-from source.filter.numericRangeFilter import NumericRangeFilter
-from source.filter.booleanFilter import BooleanFilter
+from source.filter.equalityFilter import EqualityFilter
+from source.shuffle import Shuffle
 from spotifyPlaylistMixer import SpotifyPlaylistMixer
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
@@ -27,18 +27,18 @@ sp = spotipy.Spotify(
                               scope=scope))
 
 recentlyPlayed = RecentlyPlayed(sp)
-salsa = SpotifyPlaylist(sp, "https://open.spotify.com/playlist/5Db6luvdhq3bEGwX3zcI5P?si=1e777cc298fe4fc4", random)
+salsa = SpotifyPlaylist(sp, "https://open.spotify.com/playlist/5Db6luvdhq3bEGwX3zcI5P?si=1e777cc298fe4fc4")
 bachata = SpotifyPlaylist(sp, "https://open.spotify.com/playlist/4rPVgVb4xNOpexM22v5I72?si=8a4902de321a4f93")
 kizomba = SpotifyPlaylist(sp, "https://open.spotify.com/playlist/0RPAReDJdaECIrco82WuhC?si=388dc32d20cc43b0")
 zouk = SpotifyPlaylist(sp, "https://open.spotify.com/playlist/3BnuWDbMlEHzEnyC3zwS4q?si=9a52f63277124ee0")
 
 freshSalsa = SetMinus(salsa, recentlyPlayed)
-
-nonExplicitBachata = BooleanFilter(bachata, lambda track: track.explicit, False)
+nonExplicitBachata = EqualityFilter(bachata, "explicit", False)
+shuffledKizomba = Shuffle(kizomba, random)
 
 salsaPattern = TakeN(3, freshSalsa)
 bachataPattern = TakeN(3, nonExplicitBachata)
-kizombaPattern = TakeN(3, kizomba)
+kizombaPattern = TakeN(3, shuffledKizomba)
 zoukPattern = TakeN(2, zouk)
 
 sbk = Concatenate([salsaPattern, bachataPattern, kizombaPattern])

@@ -5,9 +5,10 @@ from source.concatenate import Concatenate
 from source.setMinus import SetMinus
 from source.repeatN import RepeatN
 from source.loop import Loop
-from source.filter.numericRangeFilter import NumericRangeFilter
+from source.filter.equalityFilter import EqualityFilter
 from source.filter.distinctFilter import DistinctFilter
-from source.filter.booleanFilter import BooleanFilter
+from source.filter.distinctFilterSet import DistinctFilterSet
+from source.shuffle import Shuffle
 from spotifyPlaylistMixer import SpotifyPlaylistMixer
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
@@ -28,21 +29,27 @@ sp = spotipy.Spotify(
                               scope=scope))
 
 recentlyPlayed = RecentlyPlayed(sp)
-salsa = SpotifyPlaylist(sp, "https://open.spotify.com/playlist/6SzueO7QgQjoPicIO9Lkqn?si=583b8f8a58804bb7", random)
-bachata = SpotifyPlaylist(sp, "https://open.spotify.com/playlist/5SqR3iQ1rvzjjB8vEPlF8d?si=214125cac5744fd7", random)
-kizomba = SpotifyPlaylist(sp, "https://open.spotify.com/playlist/37i9dQZF1DX1l6qs3gcM4U?si=075ff6e61bc24fd0", random)
-kizombaSensual = SpotifyPlaylist(sp, "https://open.spotify.com/playlist/4VFLaOUZDWFsDWbZmCpqP3?si=b48dc3c40720435b", random)
+salsa = SpotifyPlaylist(sp, "https://open.spotify.com/playlist/6SzueO7QgQjoPicIO9Lkqn?si=583b8f8a58804bb7")
+bachata = SpotifyPlaylist(sp, "https://open.spotify.com/playlist/5SqR3iQ1rvzjjB8vEPlF8d?si=214125cac5744fd7")
+kizomba = SpotifyPlaylist(sp, "https://open.spotify.com/playlist/0RPAReDJdaECIrco82WuhC?si=3198b7d436e04547")
+kizombaSensual = SpotifyPlaylist(sp, "https://open.spotify.com/playlist/034xxmY8mxDxEZlvTyyD0y?si=8d44f77f116344da")
+
+salsa = Shuffle(salsa, random)
+bachata = Shuffle(bachata, random)
+kizomba = Shuffle(kizomba, random)
+kizombaSensual = Shuffle(kizombaSensual, random)
+
 
 salsa = SetMinus(salsa, recentlyPlayed)
 bachata = SetMinus(bachata, recentlyPlayed)
 kizomba = SetMinus(kizomba, recentlyPlayed)
 kizombaSensual = SetMinus(kizombaSensual, recentlyPlayed)
 
-distinctFilter = DistinctFilter()
-salsa = BooleanFilter(salsa, lambda track: distinctFilter.filter(track))
-bachata = BooleanFilter(bachata, lambda track: distinctFilter.filter(track))
-kizomba = BooleanFilter(kizomba, lambda track: distinctFilter.filter(track))
-kizombaSensual = BooleanFilter(kizombaSensual, lambda track: distinctFilter.filter(track))
+distinctFilterSet = DistinctFilterSet()
+salsa = DistinctFilter(salsa, distinctFilterSet)
+bachata = DistinctFilter(bachata, distinctFilterSet)
+kizomba = DistinctFilter(kizomba, distinctFilterSet)
+kizombaSensual = DistinctFilter(kizombaSensual, distinctFilterSet)
 
 salsaPattern = TakeN(3, salsa)
 bachataPattern = TakeN(3, bachata)

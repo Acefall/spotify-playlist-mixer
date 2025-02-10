@@ -1,4 +1,14 @@
 from spotify_playlist_mixer.serializer import Serializer
+from spotifyPlaylistMock import SpotifyPlaylistMock
+from spotify_playlist_mixer.source.setMinus import SetMinus
+from spotify_playlist_mixer.source.takeN import TakeN
+from spotify_playlist_mixer.source.concatenate import Concatenate
+from spotify_playlist_mixer.source.repeatN import RepeatN
+from spotify_playlist_mixer.source.loop import Loop
+from spotify_playlist_mixer.derserializer import Deserializer
+from spotify_playlist_mixer.source.outOfTracks import OutOfTracks
+import pytest
+
 
 class LeafNode:
     def __init__(self):
@@ -95,4 +105,39 @@ def test_cyclic_dependency_results_in_two_serialized_objects():
     assert "data" in serializer.objects[1]
     assert "child" in serializer.objects[0]["data"]
     
-    
+
+def test_complex_playlist_is_serialized_and_deserialized_correctly():
+    recentlyPlayed = SpotifyPlaylistMock(["s1", "k1", "b1"])
+    salsa = SpotifyPlaylistMock(["s1", "s2", "s3", "s4", "s5", "s6", "s7", "s8"])
+    bachata = SpotifyPlaylistMock(["b1", "b2", "b3", "b4", "b5", "b6", "b7", "b8"])
+    kizomba = SpotifyPlaylistMock(["k1", "k2", "k3", "k4", "k5", "k6", "k7", "k8"])
+    zouk = SpotifyPlaylistMock(["z1", "z2", "z3", "z4", "z5", "z6", "z7", "z8"])
+
+    freshSalsa = SetMinus(salsa, recentlyPlayed)
+    freshBachata = SetMinus(bachata, recentlyPlayed)
+    freshKizomba = SetMinus(kizomba, recentlyPlayed)
+    freshZouk = SetMinus(zouk, recentlyPlayed)
+
+    salsaPattern = TakeN(3, freshSalsa)
+    bachataPattern = TakeN(3, freshBachata)
+    kizombaPattern = TakeN(3, freshKizomba)
+    zoukPattern = TakeN(2, freshZouk)
+
+    sbk = Concatenate([salsaPattern, bachataPattern, kizombaPattern])
+    sbk3 = RepeatN(3, sbk)
+    sbkAndZouk = Concatenate([sbk3, zoukPattern])
+
+    playlist = Loop(sbkAndZouk)
+
+    serializer = Serializer()
+    serialized = serializer.serialize(playlist)
+
+    deserializer = Deserializer(serializer.getObjects())
+    deserializer.class_map["SpotifyPlaylistMock"] = SpotifyPlaylistMock
+    deserialized = deserializer.deserialize(serialized)
+   
+    for originalTrack, deserializedTrack in zip(playlist, deserialized):
+        assert originalTrack == deserializedTrack
+
+    with pytest.raises(OutOfTracks) as e_info:
+        next(deserialized)
