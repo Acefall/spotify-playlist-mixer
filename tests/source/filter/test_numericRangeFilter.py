@@ -3,7 +3,7 @@ from spotify_playlist_mixer.source.filter.numericRangeFilter import NumericRange
 from spotify_playlist_mixer.track import Track
 from spotify_playlist_mixer.source.outOfTracks import OutOfTracks
 from spotify_playlist_mixer.serializer import Serializer
-from spotify_playlist_mixer.derserializer import Deserializer
+from spotify_playlist_mixer.deserializer import Deserializer
 import pytest
 
 

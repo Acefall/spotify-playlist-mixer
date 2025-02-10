@@ -1,4 +1,4 @@
-from spotify_playlist_mixer.derserializer import Deserializer
+from spotify_playlist_mixer.deserializer import Deserializer
 from spotify_playlist_mixer.serializer import Serializer
 
 class LeafNode:

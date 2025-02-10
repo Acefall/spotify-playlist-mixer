@@ -3,7 +3,7 @@ from tests.source.spotifyPlaylistMock import SpotifyPlaylistMock
 from spotify_playlist_mixer.source.endOfPattern import EndOfPattern
 from spotify_playlist_mixer.source.outOfTracks import OutOfTracks
 from spotify_playlist_mixer.source.spotifyPlaylist import SpotifyPlaylist
-from spotify_playlist_mixer.derserializer import Deserializer
+from spotify_playlist_mixer.deserializer import Deserializer
 from spotify_playlist_mixer.serializer import Serializer
 
 import pytest

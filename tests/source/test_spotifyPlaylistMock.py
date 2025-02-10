@@ -2,7 +2,7 @@ from tests.source.spotifyPlaylistMock import SpotifyPlaylistMock
 from spotify_playlist_mixer.source.outOfTracks import OutOfTracks
 import pytest
 from spotify_playlist_mixer.serializer import Serializer
-from spotify_playlist_mixer.derserializer import Deserializer
+from spotify_playlist_mixer.deserializer import Deserializer
 
 def test_throws_out_of_tracks_exception():
     playlist = SpotifyPlaylistMock(["s1", "s2", "s3"])

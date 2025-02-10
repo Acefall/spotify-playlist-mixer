@@ -2,7 +2,7 @@ from spotify_playlist_mixer.source.takeN import TakeN
 from tests.source.spotifyPlaylistMock import SpotifyPlaylistMock
 from spotify_playlist_mixer.source.outOfTracks import OutOfTracks
 from spotify_playlist_mixer.source.spotifyPlaylist import SpotifyPlaylist
-from spotify_playlist_mixer.derserializer import Deserializer
+from spotify_playlist_mixer.deserializer import Deserializer
 from spotify_playlist_mixer.source.shuffle import Shuffle
 import random
 

@@ -5,6 +5,7 @@ from spotify_playlist_mixer.source.recentlyPlayed import RecentlyPlayed
 from spotify_playlist_mixer.source.repeatN import RepeatN
 from spotify_playlist_mixer.source.setMinus import SetMinus
 from spotify_playlist_mixer.source.takeN import TakeN
+from spotify_playlist_mixer.source.shuffle import Shuffle
 from spotify_playlist_mixer.source.filter.numericRangeFilter import NumericRangeFilter
 from spotify_playlist_mixer.source.filter.equalityFilter import EqualityFilter
 from spotify_playlist_mixer.source.filter.distinctFilter import DistinctFilter
@@ -15,6 +16,7 @@ import random
 class Deserializer():
     class_map = {
         'Concatenate': Concatenate,
+        'Shuffle': Shuffle,
         'Loop': Loop,
         'RecentlyPlayed': RecentlyPlayed,
         'RepeatN': RepeatN,

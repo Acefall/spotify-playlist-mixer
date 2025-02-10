@@ -49,6 +49,6 @@ sbkAndZouk = Concatenate([sbk3, zoukPattern])
 playlist = Loop(sbkAndZouk)
 
 mixer  = SpotifyPlaylistMixer(sp, spotifyId)
-mixer.create("New Mixed Playlist", playlist)
+mixer.create(newPlaylistName, playlist)
 
 print("Done generating")

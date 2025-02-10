@@ -4,7 +4,7 @@ from spotify_playlist_mixer.source.concatenate import Concatenate
 from spotify_playlist_mixer.source.takeN import TakeN
 from spotify_playlist_mixer.source.repeatN import RepeatN
 from spotify_playlist_mixer.source.spotifyPlaylist import SpotifyPlaylist
-from spotify_playlist_mixer.derserializer import Deserializer
+from spotify_playlist_mixer.deserializer import Deserializer
 from spotify_playlist_mixer.serializer import Serializer
 from spotify_playlist_mixer.source.outOfTracks import OutOfTracks
 import pytest

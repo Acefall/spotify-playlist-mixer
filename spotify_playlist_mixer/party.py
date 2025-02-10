@@ -17,7 +17,7 @@ import spotipySecrets
 import random
 
 spotifyId = "acefall"
-newPlaylistName = "Mixed Playlist"
+newPlaylistName = "Party 2024-09-07"
 
 
 scope = "user-library-read playlist-modify-private playlist-modify-public user-read-recently-played"
@@ -61,6 +61,6 @@ sbk = Concatenate([salsaPattern, bachataPattern, kizombaSensualPattern, kizombaP
 playlist = Loop(sbk)
 
 mixer  = SpotifyPlaylistMixer(sp, spotifyId)
-mixer.create("Party 2024-09-07", playlist)
+mixer.create(newPlaylistName, playlist)
 
 print("Done generating")
