@@ -63,7 +63,7 @@ def test_serialization_and_deserialization_happy_path():
 
     assert isinstance(deserialized, Loop)
     
-    for originalTrack, deserializedTrack in zip(takeN, deserialized):
+    for originalTrack, deserializedTrack in zip(loop, deserialized):
         assert originalTrack == deserializedTrack
 
     with pytest.raises(OutOfTracks) as e_info:

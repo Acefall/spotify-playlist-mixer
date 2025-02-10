@@ -9,6 +9,7 @@ from spotify_playlist_mixer.source.filter.numericRangeFilter import NumericRange
 from spotify_playlist_mixer.source.filter.equalityFilter import EqualityFilter
 from spotify_playlist_mixer.source.filter.distinctFilter import DistinctFilter
 from spotify_playlist_mixer.source.filter.distinctFilterSet import DistinctFilterSet
+import random
 
 
 class Deserializer():
@@ -26,10 +27,11 @@ class Deserializer():
         "DistinctFilterSet": DistinctFilterSet,
     }
 
-    def __init__(self, serializedObjects, auth=None):
+    def __init__(self, serializedObjects, auth=None, sourceOfRandomness=random):
         self.serializedObjects = serializedObjects
         self.deserializedObjects = {}
         self.auth = auth
+        self.sourceOfRandomness = sourceOfRandomness
 
     def deserialize(self, objectDict):
         # if the id is already in the deserialized objects return immediately

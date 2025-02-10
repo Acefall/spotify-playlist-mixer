@@ -1,0 +1,110 @@
+{
+  "id": 0,
+  "type": "Loop",
+  "data": {
+    "source": {
+      "id": 1,
+      "type": "Concatenate",
+      "data": {
+        "sources": [
+          {
+            "id": 2,
+            "type": "RepeatN",
+            "data": {
+              "n": 3,
+              "source": {
+                "id": 3,
+                "type": "Concatenate",
+                "data": {
+                  "sources": [
+                    {
+                      "id": 4,
+                      "type": "TakeN",
+                      "data": {
+                        "n": 3,
+                        "source": {
+                          "id": 5,
+                          "type": "SetMinus",
+                          "data": {
+                            "source1": {
+                              "id": 6,
+                              "type": "SpotifyPlaylist",
+                              "data": {
+                                "url": "https://open.spotify.com/playlist/5Db6luvdhq3bEGwX3zcI5P?si=1e777cc298fe4fc4"
+                              }
+                            },
+                            "source2": {
+                              "id": 7,
+                              "type": "RecentlyPlayed",
+                              "data": {}
+                            }
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "id": 8,
+                      "type": "TakeN",
+                      "data": {
+                        "n": 3,
+                        "source": {
+                          "id": 9,
+                          "type": "EqualityFilter",
+                          "data": {
+                            "source": {
+                              "id": 10,
+                              "type": "SpotifyPlaylist",
+                              "data": {
+                                "url": "https://open.spotify.com/playlist/4rPVgVb4xNOpexM22v5I72?si=8a4902de321a4f93"
+                              }
+                            },
+                            "attribute": "explicit",
+                            "expectedValue": false
+                          }
+                        }
+                      }
+                    },
+                    {
+                      "id": 11,
+                      "type": "TakeN",
+                      "data": {
+                        "n": 3,
+                        "source": {
+                          "id": 12,
+                          "type": "Shuffle",
+                          "data": {
+                            "source": {
+                              "id": 13,
+                              "type": "SpotifyPlaylist",
+                              "data": {
+                                "url": "https://open.spotify.com/playlist/0RPAReDJdaECIrco82WuhC?si=388dc32d20cc43b0"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "id": 14,
+            "type": "TakeN",
+            "data": {
+              "n": 2,
+              "source": {
+                "id": 15,
+                "type": "SpotifyPlaylist",
+                "data": {
+                  "url": "https://open.spotify.com/playlist/3BnuWDbMlEHzEnyC3zwS4q?si=9a52f63277124ee0"
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

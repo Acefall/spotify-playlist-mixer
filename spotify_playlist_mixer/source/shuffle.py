@@ -11,21 +11,29 @@ class Shuffle(Source):
         self.source = source
         self.tracks = []
         self.nextTrack = 0
+        self.shuffled = False
+        self.sourceOfRandomness = sourceOfRandomness
 
-        for track in source:
+        
+
+    def _shuffle(self):
+        for track in self.source:
             self.tracks.append(track)
 
             # Limit the number of iterations if the source contains a loop
             if len(self.tracks) > MAX_SHUFFLE_LENGTH:
                 break
 
-        sourceOfRandomness.shuffle(self.tracks)
-
+        self.sourceOfRandomness.shuffle(self.tracks)
+        self.shuffled = True
 
     def __iter__(self):
         return self
 
     def __next__(self):
+        if not self.shuffled:
+            self._shuffle()
+
         if self.nextTrack >= len(self.tracks):
             raise OutOfTracks()
         
