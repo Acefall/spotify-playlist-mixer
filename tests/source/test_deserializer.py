@@ -33,10 +33,10 @@ def test_object_is_provided_from_already_deserialized_objects_as_reference():
     leafNode = LeafNode()
     serializedNode = serializer.serialize(leafNode)
 
-    deserializer = Deserializer(serializer.objects)
+    deserializer = Deserializer()
     deserializedNode = deserializer.deserialize(serializedNode)
     deserializedNode.magicAttribute = "MagicValue"
 
-    deserializedNodeAgain = deserializer.deserialize({"id": 0})
+    deserializedNodeAgain = deserializer.deserialize({"id": serializedNode["id"]})
     assert hasattr(deserializedNodeAgain, "magicAttribute")
     assert deserializedNodeAgain.magicAttribute == "MagicValue"

@@ -11,7 +11,7 @@ def test_serialization_and_deserialization_happy_path():
     serializer = Serializer()
     serialized = serializer.serialize(playlist)
 
-    deserializer = Deserializer(serializer.getObjects(), None)
+    deserializer = Deserializer()
     deserialized = deserializer.deserialize(serialized)
 
     assert isinstance(deserialized, SpotifyPlaylist)

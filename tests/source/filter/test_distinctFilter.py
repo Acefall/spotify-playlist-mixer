@@ -3,6 +3,7 @@ from spotify_playlist_mixer.source.filter.distinctFilterSet import DistinctFilte
 from spotify_playlist_mixer.source.filter.distinctFilter import DistinctFilter
 from spotify_playlist_mixer.source.outOfTracks import OutOfTracks
 from spotify_playlist_mixer.track import Track
+from spotify_playlist_mixer.source.concatenate import Concatenate
 from spotify_playlist_mixer.serializer import Serializer
 from spotify_playlist_mixer.derserializer import Deserializer
 import pytest
@@ -79,7 +80,7 @@ def test_serialization_and_deserialization_happy_path(tracks):
     serialized1 = serializer.serialize(distinctSource1)
     serialized2 = serializer.serialize(distinctSource2)
 
-    deserializer = Deserializer(serializer.getObjects())
+    deserializer = Deserializer()
     deserializer.class_map["SpotifyPlaylistMock"] = SpotifyPlaylistMock
     deserialized1 = deserializer.deserialize(serialized1)
     deserialized2 = deserializer.deserialize(serialized2)

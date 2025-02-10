@@ -50,7 +50,6 @@ def test_second_serialize_results_in_reference_by_id():
 
     assert len(serialized) == 1
     assert "id" in serialized
-    assert serialized["id"] == object.id
 
 class InternalNode:
     def __init__(self, child):
@@ -92,18 +91,21 @@ def test_cyclic_dependency_results_in_two_serialized_objects():
     node2 = InternalNode(node1)
     node1.child = node2
 
-    serializer.serialize(node1)
-    assert len(serializer.objects) == 2
+    serialized = serializer.serialize(node1)
 
-    assert 0 in serializer.objects
-    assert "type" in serializer.objects[0]
-    assert "data" in serializer.objects[0]
-    assert "child" in serializer.objects[0]["data"]
+    assert "type" in serialized
+    assert "data" in serialized
+    assert "child" in serialized["data"]
 
-    assert 1 in serializer.objects
-    assert "type" in serializer.objects[1]
-    assert "data" in serializer.objects[1]
-    assert "child" in serializer.objects[0]["data"]
+    child = serialized["data"]["child"]
+    assert "id" in child
+    assert "type" in child
+    assert "data" in child
+    assert "child" in child["data"]
+
+    grandChild = child["data"]["child"]
+    assert len(grandChild) == 1
+    assert "id" in grandChild
     
 
 def test_complex_playlist_is_serialized_and_deserialized_correctly():
@@ -132,7 +134,7 @@ def test_complex_playlist_is_serialized_and_deserialized_correctly():
     serializer = Serializer()
     serialized = serializer.serialize(playlist)
 
-    deserializer = Deserializer(serializer.getObjects())
+    deserializer = Deserializer()
     deserializer.class_map["SpotifyPlaylistMock"] = SpotifyPlaylistMock
     deserialized = deserializer.deserialize(serialized)
    

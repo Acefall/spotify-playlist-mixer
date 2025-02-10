@@ -9,18 +9,19 @@ class Serializer():
         return next(self.ids)
     
     def serialize(self, object):
-
-        if hasattr(object, "id"):
+        
+        if id(object) in self.objects:
             print("Object has been serialized already")
-            return {"id": object.id}
+            return {"id": id(object)}
+        
+        self.objects[id(object)] = "I have seen this id."
 
-        object.id = self._getUniqueId()
         objectAsDict = dict()
-        objectAsDict["id"] = object.id
+        objectAsDict["id"] = id(object)
         objectAsDict["type"] = object.__class__.__name__
         objectAsDict["data"] = object.serialize(self)
 
-        self.objects[object.id] = objectAsDict
+        self.objects[id(object)] = objectAsDict
 
         return objectAsDict
     

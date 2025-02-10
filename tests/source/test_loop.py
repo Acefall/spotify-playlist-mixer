@@ -57,7 +57,7 @@ def test_serialization_and_deserialization_happy_path():
     serializer = Serializer()
     serialized = serializer.serialize(loop)
 
-    deserializer = Deserializer(serializer.getObjects())
+    deserializer = Deserializer()
     deserializer.class_map["SpotifyPlaylistMock"] = SpotifyPlaylistMock
     deserialized = deserializer.deserialize(serialized)
 

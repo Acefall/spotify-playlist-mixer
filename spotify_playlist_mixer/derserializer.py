@@ -27,20 +27,47 @@ class Deserializer():
         "DistinctFilterSet": DistinctFilterSet,
     }
 
-    def __init__(self, serializedObjects, auth=None, sourceOfRandomness=random):
-        self.serializedObjects = serializedObjects
-        self.deserializedObjects = {}
+    def __init__(self, auth=None, sourceOfRandomness=random):
         self.auth = auth
         self.sourceOfRandomness = sourceOfRandomness
+        self.deserializedObjects = dict()
 
-    def deserialize(self, objectDict):
+    def _findChildObjectById(self, root, id):
+        child = None
+        
+        if isinstance(root, list):
+            for item in root:
+                child = self._findChildObjectById(item, id)
+                if child is not None:
+                    return child
+
+        if not isinstance(root, dict):
+            return None
+
+        if "id" not in root or "data" not in root:
+            return None
+        
+        if root["id"] == id: # Found item
+            return root
+        
+        for _, attributeValue in root["data"]:
+            child = self._findChildObjectById(attributeValue, id)
+            if child is not None:
+                return child
+            
+        return child
+
+    def deserialize(self, objectDict, root=None):
+        if root is None:
+            root = objectDict
+
         # if the id is already in the deserialized objects return immediately
         if objectDict["id"] in self.deserializedObjects:
             return self.deserializedObjects[objectDict["id"]]
         
-        # Only id is provided. Full definition of the object must be in serializedObjects
+        # Only id is provided. Full definition of the object must be somewhere in the tree
         if not "type" in objectDict:
-            return self.deserialize(self.serializedObjects[objectDict["id"]])
+            return self.deserialize(self._findChildObjectById(root, objectDict["id"]), root)
         
         if objectDict['type'] in Deserializer.class_map:
             deserializedObject = Deserializer.class_map[objectDict['type']].deserialize(objectDict["data"], self)

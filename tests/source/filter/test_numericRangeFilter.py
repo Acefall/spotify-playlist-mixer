@@ -99,7 +99,7 @@ def test_serialization_and_deserialization_happy_path(tracks):
     serializer = Serializer()
     serialized = serializer.serialize(popularityFilter)
 
-    deserializer = Deserializer(serializer.getObjects())
+    deserializer = Deserializer()
     deserializer.class_map["SpotifyPlaylistMock"] = SpotifyPlaylistMock
     deserialized = deserializer.deserialize(serialized)
 
